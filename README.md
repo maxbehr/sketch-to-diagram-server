@@ -10,4 +10,9 @@ This project sends your diagram sketches to the diagram-detection module. Your s
 1. Draw!
 
 ## Configuration
-Add the environment variable ```DIAGRAM_DETECTOR_PATH``` that points to your diagram detection module.
+Add the environment variable ```DIAGRAM_DETECTOR_PATH``` that points to your diagram detection module, as well as the ```FLASK_APP``` variable for ```server.py```:
+
+```bash
+export DIAGRAM_DETECTOR_PATH=<path>
+export FLASK_APP=server.py
+```
