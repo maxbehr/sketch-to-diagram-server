@@ -2,6 +2,8 @@
 
 This project sends your diagram sketches to the diagram-detection module. Your sketch will be analyzed and the result image is presented next to your drawing.
 
+Sketches drawn on the canvas are saved in ```static/img``` and will be analyzed immediately. The result is then saved as ```static/output/result.png``` and will be presented next to your sketch.
+
 ## Installation
 1. Make sure you have the [diagram-detector](https://github.com/maxbehr/diagram-detection) installed
 1. Clone this repository
