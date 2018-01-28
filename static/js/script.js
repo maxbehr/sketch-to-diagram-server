@@ -36,7 +36,7 @@ $(document).ready(function() {
         base64 = base64.split(",")[1]
         return $.ajax({
             type: "POST",
-            url: "http://localhost:5000/detect",
+            url: "http://localhost:5000/detect-diagram",
             data: {
                 payload: base64
             }

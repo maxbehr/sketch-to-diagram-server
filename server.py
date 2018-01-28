@@ -18,7 +18,7 @@ def server_index():
     return render_template('index.html')
 
 
-@app.route('/detect', methods=['POST'])
+@app.route('/detect-diagram', methods=['POST'])
 def detect_diagram():
     # Get base64 image
     payload = request.form.get('payload')
