@@ -1,6 +1,9 @@
 $(document).ready(function() {
-    var canvas,
-        ctx,
+    let ROUTE_DETECT_DIAGRAM = "detect-diagram",
+        ROUTE_DETECT_LINES = "detect-lines";
+
+    let canvas = $("canvas"),
+        ctx = $(canvas)[0].getContext("2d"),
         prevX = 0,
         currX = 0,
         prevY = 0,
@@ -10,14 +13,11 @@ $(document).ready(function() {
         resetColor = "white",
         strokeColor = "black",
         strokeWidth = 5,
-        canvas = $("canvas"),
         canvasWidth = $(canvas).width(),
-        canvasHeight = $(canvas).height(),
-        ctx = $(canvas)[0].getContext("2d");
+        canvasHeight = $(canvas).height();
 
-    $('input#btn-save').on('click', function() {
-        sendRequest().done(handleResult);
-    })
+    $('input#btn-detect-diagram').click(() => sendRequest(ROUTE_DETECT_DIAGRAM).done(handleResult))
+    $('input#btn-detect-lines').click(() => sendRequest(ROUTE_DETECT_LINES).done(handleResult))
 
     //  Reset image (draw default background)
     resetImage()
@@ -27,16 +27,17 @@ $(document).ready(function() {
     $(canvas).on("mousedown", (event) => mouse("down", event));
     $(canvas).on("mouseup", (event) => {
         mouse("up", event);
-        sendRequest().done(handleResult);
+        sendRequest(ROUTE_DETECT_DIAGRAM).done(handleResult);
     });
     $(canvas).on("mouseout", (event) => mouse("out", event));
 
-    function sendRequest() {
+    function sendRequest(route) {
+        let url = "http://localhost:5000/" + route;
         let base64 = $(canvas)[0].toDataURL();
         base64 = base64.split(",")[1]
         return $.ajax({
             type: "POST",
-            url: "http://localhost:5000/detect-diagram",
+            url: url,
             data: {
                 payload: base64
             }
