@@ -13,6 +13,10 @@ from detector.detector import ShapeDetector, DiagramTypeDetector, LineDetector
 
 app = Flask(__name__)
 
+INPUT_PATH = "static/img/drawn_image.png"
+OUTPUT_PATH = "static/output/result.png"
+
+
 @app.route('/')
 def server_index():
     return render_template('index.html')
@@ -20,21 +24,14 @@ def server_index():
 
 @app.route('/detect-diagram', methods=['POST'])
 def detect_diagram():
-    # Get base64 image
-    payload = request.form.get('payload')
-    image_data = str.encode(payload)
+    """
+    Tries to detect an UML diagram on the given image.
+    :return:
+    """
+    handle_payload()
 
-    img_path = "static/img/drawn_image.png"
-    with open(img_path, "wb") as fh:
-        fh.write(base64.decodebytes(image_data))
-
-    analyze_image(img_path)
-    return '', 200
-
-
-def analyze_image(img_path):
     #   Detect all shapes
-    shape_detector = ShapeDetector(img_path)
+    shape_detector = ShapeDetector(INPUT_PATH)
     shape_detector.find_shapes()
 
     #   Detect type of primitives
@@ -47,7 +44,30 @@ def analyze_image(img_path):
     img = shape_detector.image
     img = util.draw_entities_on_image(img, generic_entities)
 
+    save_result_image(img)
+
+    return '', 200
+
+
+def handle_payload():
+    """
+    Saves the given base64 image as image file.
+    :return:
+    """
+    # Get base64 image
+    payload = request.form.get('payload')
+    image_data = str.encode(payload)
+
+    with open(INPUT_PATH, "wb") as fh:
+        fh.write(base64.decodebytes(image_data))
+
+
+def save_result_image(img):
+    """
+    Saves the result image as image file.
+    :param img:
+    :return:
+    """
     #   Save result
     im = Image.fromarray(img)
-    img_path = "static/output/result.png"
-    im.save(img_path)
+    im.save(OUTPUT_PATH)
