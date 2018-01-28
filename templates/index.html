@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Titel </title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="input">
+            <div class="head">
+                Input
+                <input id="btn-reset" type="button" value="Reset">
+                <input id="btn-save" type="button" value="Send image">
+            </div>
+            <div class="body">
+                <canvas width="800" height="600"></canvas>
+            </div>
+        </div>
+
+        <div id="output">
+            <div class="head">
+                Output
+            </div>
+            <div class="body">
+                <img id="output-image"  width="800" height="600" src="{{ url_for('static', filename='output/result.png') }}" />
+            </div>
+        </div>
+    </div>
+
+</body>
+
+    <script src="{{ url_for('static', filename='lib/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</html>

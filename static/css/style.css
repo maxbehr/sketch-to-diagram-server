@@ -1,0 +1,41 @@
+div#wrapper {
+    display: grid;
+    grid-template-rows: 1;
+    grid-template-columns: 2;
+}
+
+div.container {
+    display: grid;
+    grid-template-rows: 2;
+    grid-template-columns: 1;
+}
+
+div.head {
+    grid-row: 1 / 2;
+}
+
+div.body {
+    grid-row: 2 / 3;
+}
+
+div#input {
+    grid-row: 1 / 1;
+    grid-column: 1 / 2;
+}
+
+canvas {
+    border: 1px solid black;
+    height: 600px;
+    width: 800px;
+}
+
+div#output {
+    grid-row: 1 / 1;
+    grid-column: 2 / 3;
+    height: 600px;
+    width: 800px;
+}
+
+div#output img {
+    border: 1px solid black;
+}
