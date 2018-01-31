@@ -14,15 +14,19 @@ $(document).ready(function() {
         strokeColor = "black",
         strokeWidth = 5,
         canvasWidth = $(canvas).width(),
-        canvasHeight = $(canvas).height();
+        canvasHeight = $(canvas).height(),
+        imageLoadPath = $("#txt-load-img-path").text();
 
+    $("#txt-load-img-path").on("input propertychange paste", () => imageLoadPath = $("#txt-load-img-path").val());
     $('input#btn-detect-diagram').click(() => sendRequest(ROUTE_DETECT_DIAGRAM).done(handleResult))
     $('input#btn-detect-lines').click(() => sendRequest(ROUTE_DETECT_LINES).done(handleResult))
 
     //  Reset image (draw default background)
-    resetImage()
+    resetImage();
 
-    $('#btn-reset').click(() => resetImage())
+    $('#btn-reset').click(() => resetImage());
+    $('#btn-load-img').click(() => loadImageToCanvas(imageLoadPath));
+
     $(canvas).on("mousemove", (event) => mouse("move", event));
     $(canvas).on("mousedown", (event) => mouse("down", event));
     $(canvas).on("mouseup", (event) => {
@@ -101,6 +105,19 @@ $(document).ready(function() {
                 currY = e.clientY - offset.top;
                 draw();
             }
+        }
+    }
+
+    /**
+     * Loads an image to the canvas.
+     * @param  {[type]} imagePath Path of the image that will be loaded.
+     */
+    function loadImageToCanvas(imagePath) {
+        var img = new Image();
+        img.src = imagePath;
+        img.onload = function(e) {
+            ctx.drawImage(img, 0, 0, 800, 600);
+            console.log(`${imagePath} (${img.width}x${img.height}) has been loaded`);
         }
     }
 });
