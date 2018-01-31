@@ -15,14 +15,19 @@ $(document).ready(function() {
         strokeWidth = 5,
         canvasWidth = $(canvas).width(),
         canvasHeight = $(canvas).height(),
-        imageLoadPath = $("#txt-load-img-path").text();
+        imageLoadPath = "";
 
+    $("#txt-load-img-path").val(imageLoadPath);
     $("#txt-load-img-path").on("input propertychange paste", () => imageLoadPath = $("#txt-load-img-path").val());
+
     $('input#btn-detect-diagram').click(() => sendRequest(ROUTE_DETECT_DIAGRAM).done(handleResult))
     $('input#btn-detect-lines').click(() => sendRequest(ROUTE_DETECT_LINES).done(handleResult))
 
     //  Reset image (draw default background)
     resetImage();
+
+    //  Load image on startup
+    loadImageToCanvas(imageLoadPath)
 
     $('#btn-reset').click(() => resetImage());
     $('#btn-load-img').click(() => loadImageToCanvas(imageLoadPath));
