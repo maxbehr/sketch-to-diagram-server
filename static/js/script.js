@@ -27,7 +27,8 @@ $(document).ready(function() {
     resetImage();
 
     //  Load image on startup
-    loadImageToCanvas(imageLoadPath)
+    loadImageToCanvas(imageLoadPath, function() {
+    });
 
     $('#btn-reset').click(() => resetImage());
     $('#btn-load-img').click(() => loadImageToCanvas(imageLoadPath));
@@ -117,12 +118,14 @@ $(document).ready(function() {
      * Loads an image to the canvas.
      * @param  {[type]} imagePath Path of the image that will be loaded.
      */
-    function loadImageToCanvas(imagePath) {
+    function loadImageToCanvas(imagePath, loadedCallback) {
         var img = new Image();
         img.src = imagePath;
         img.onload = function(e) {
             ctx.drawImage(img, 0, 0, 800, 600);
             console.log(`${imagePath} (${img.width}x${img.height}) has been loaded`);
+
+            loadedCallback();
         }
     }
 });
