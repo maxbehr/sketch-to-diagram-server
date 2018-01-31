@@ -125,7 +125,9 @@ $(document).ready(function() {
             ctx.drawImage(img, 0, 0, 800, 600);
             console.log(`${imagePath} (${img.width}x${img.height}) has been loaded`);
 
-            loadedCallback();
+            if (loadedCallback !== undefined) {
+                loadedCallback();
+            }
         }
     }
 });
