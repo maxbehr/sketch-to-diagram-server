@@ -1,6 +1,7 @@
 $(document).ready(function() {
     let ROUTE_DETECT_DIAGRAM = "detect-diagram",
         ROUTE_DETECT_LINES = "detect-lines";
+        ROUTE_DETECT_SHAPES = "detect-shapes";
 
     let canvas = $("canvas"),
         ctx = $(canvas)[0].getContext("2d"),
@@ -22,6 +23,7 @@ $(document).ready(function() {
 
     $('input#btn-detect-diagram').click(() => sendRequest(ROUTE_DETECT_DIAGRAM).done(handleResult))
     $('input#btn-detect-lines').click(() => sendRequest(ROUTE_DETECT_LINES).done(handleResult))
+    $('input#btn-detect-shapes').click(() => sendRequest(ROUTE_DETECT_SHAPES).done(handleResult))
 
     //  Reset image (draw default background)
     resetImage();
