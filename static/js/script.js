@@ -12,7 +12,7 @@ $(document).ready(function() {
         isMouseDown = false,
         isDrawing = false,
         resetColor = "white",
-        strokeColor = "black",
+        strokeColor = getColor(),
         strokeWidth = 5,
         canvasWidth = $(canvas).width(),
         canvasHeight = $(canvas).height(),
@@ -65,7 +65,7 @@ $(document).ready(function() {
         ctx.beginPath();
         ctx.moveTo(prevX, prevY);
         ctx.lineTo(currX, currY);
-        ctx.strokeStyle = strokeColor;
+        ctx.strokeStyle = getColor();
         ctx.lineWidth = strokeWidth;
         ctx.stroke();
         ctx.closePath();
@@ -94,7 +94,7 @@ $(document).ready(function() {
 
             if (isDrawing) {
                 ctx.beginPath();
-                ctx.fillStyle = strokeColor;
+                ctx.fillStyle = getColor();
                 ctx.fillRect(currX, currY, strokeWidth, strokeWidth);
                 ctx.closePath();
                 isDrawing = false;
@@ -114,6 +114,15 @@ $(document).ready(function() {
                 draw();
             }
         }
+    }
+
+    /**
+     * Returns a color dependent on the chosen drawing style.
+     * @return {String} Color string
+     */
+    function getColor() {
+        let selectedMode = $('input[name=draw-style]:checked').val();
+        return selectedMode === "draw" ? "black" : "white";
     }
 
     /**
