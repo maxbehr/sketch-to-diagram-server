@@ -12,11 +12,9 @@ $(document).ready(function() {
         isMouseDown = false,
         isDrawing = false,
         resetColor = "white",
-        strokeColor = getColor(),
-        strokeWidth = 5,
         canvasWidth = $(canvas).width(),
         canvasHeight = $(canvas).height(),
-        imageLoadPath = "";
+        imageLoadPath = "/static/img/drawn_image.png";
 
     $("#txt-load-img-path").val(imageLoadPath);
     $("#txt-load-img-path").on("input propertychange paste", () => imageLoadPath = $("#txt-load-img-path").val());
@@ -30,6 +28,7 @@ $(document).ready(function() {
 
     //  Load image on startup
     loadImageToCanvas(imageLoadPath, function() {
+        sendRequest(ROUTE_DETECT_DIAGRAM).done(handleResult);
     });
 
     $('#btn-reset').click(() => resetImage());
@@ -66,7 +65,7 @@ $(document).ready(function() {
         ctx.moveTo(prevX, prevY);
         ctx.lineTo(currX, currY);
         ctx.strokeStyle = getColor();
-        ctx.lineWidth = strokeWidth;
+        ctx.lineWidth = getStrokeWidth();
         ctx.stroke();
         ctx.closePath();
     }
@@ -95,7 +94,7 @@ $(document).ready(function() {
             if (isDrawing) {
                 ctx.beginPath();
                 ctx.fillStyle = getColor();
-                ctx.fillRect(currX, currY, strokeWidth, strokeWidth);
+                ctx.fillRect(currX, currY, getStrokeWidth(), getStrokeWidth());
                 ctx.closePath();
                 isDrawing = false;
             }
@@ -123,6 +122,15 @@ $(document).ready(function() {
     function getColor() {
         let selectedMode = $('input[name=draw-style]:checked').val();
         return selectedMode === "draw" ? "black" : "white";
+    }
+
+    /**
+     * Returns the stroke width dependent on the chosen drawing style.
+     * @return {Number} Stroke width
+     */
+    function getStrokeWidth() {
+        let selectedMode = $('input[name=draw-style]:checked').val();
+        return selectedMode === "draw" ? 5 : 20;
     }
 
     /**
