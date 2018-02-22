@@ -9,8 +9,10 @@ DD_PATH = os.environ['DIAGRAM_DETECTOR_PATH']
 sys.path.append(DD_PATH)
 
 from detector import util
+from detector import draw_util
 from detector.detector import ShapeDetector, DiagramTypeDetector, LineDetector
-from detector.converter.class_diagram_converter import ClassDiagramTypes
+from detector.converter.class_diagram_converter import ClassDiagramConverter, ClassDiagramTypes
+from detector.export.class_diagram_image_exporter import ClassDiagramImageExporter
 
 app = Flask(__name__)
 
@@ -34,18 +36,16 @@ def detect_diagram():
     #   Detect all shapes
     shape_detector = ShapeDetector(INPUT_PATH)
     shape_detector.find_shapes()
+    img = shape_detector.image
 
     #   Detect type of primitives
     diagram_converter = DiagramTypeDetector.find_converter(shape_detector)
 
     #   Convert shapes to diagram
     diagram_converter.convert()
-    generic_entities = diagram_converter.get_generic_entities(type=ClassDiagramTypes.CLASS_ENTITY)
-    util.log(f"{len(generic_entities)} generic entitites")
 
-    #   Draw entities on image
-    img = shape_detector.image
-    img = util.draw_entities_on_image(img, generic_entities)
+    # Export to image
+    img = ClassDiagramImageExporter(img, diagram_converter).export()
 
     save_result_image(img)
 
@@ -68,7 +68,19 @@ def detect_lines():
     line_detector.init_with_image(shape_detector.image)
     lines = line_detector.find_lines()
     lines = line_detector.merge_lines()
-    img = util.draw_labeled_lines(shape_detector.image, lines, color=(0, 255, 0), toggle_label_drawing=True)
+    #lines = line_detector._same_slope_lines()
+    #lines = line_detector._filter_lines(lines, min_length=30)
+
+    #lines = LineDetector.filter_by_angle(lines, min_angle=45)
+
+    # angle_lines = []
+    # for l in lines:
+    #     l1, l2 = l
+    #     if l1 not in angle_lines: angle_lines.append(l1)
+    #     if l2 not in angle_lines: angle_lines.append(l2)
+
+    img = draw_util.draw_labeled_lines(shape_detector.image, lines, color=(255, 0, 0), toggle_label_drawing=False)
+    #img = draw_util.draw_labeled_lines(shape_detector.image, lines, color=(0, 255, 0), toggle_label_drawing=False)
 
     save_result_image(img)
 
@@ -90,7 +102,7 @@ def detect_shapes():
     for s in shapes:
         s.print_info()
 
-    img = util.draw_shapes_on_image(shapes, shape_detector.image)
+    img = draw_util.draw_shapes_on_image(shapes, shape_detector.image)
 
     save_result_image(img)
 
