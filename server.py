@@ -32,6 +32,7 @@ def detect_diagram():
     :return:
     """
     handle_payload()
+    opts = handle_options()
 
     #   Detect all shapes
     shape_detector = ShapeDetector(INPUT_PATH)
@@ -45,7 +46,7 @@ def detect_diagram():
     diagram_converter.convert()
 
     # Export to image
-    img = ClassDiagramImageExporter(img, diagram_converter).export()
+    img = ClassDiagramImageExporter(img, diagram_converter, opts).export()
 
     save_result_image(img)
 
@@ -120,6 +121,16 @@ def handle_payload():
 
     with open(INPUT_PATH, "wb") as fh:
         fh.write(base64.decodebytes(image_data))
+
+
+def handle_options():
+    """
+    Retrieves the send options and returns them as dictionary.
+    :return:
+    """
+    return {
+        'ocr': request.form.get('opts[ocr]').lower() == 'true'
+    }
 
 
 def save_result_image(img):

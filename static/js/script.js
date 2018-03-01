@@ -44,15 +44,17 @@ $(document).ready(function() {
 
     function sendRequest(route) {
         let url = "http://localhost:5000/" + route;
+        let options = getOptions();
         let base64 = $(canvas)[0].toDataURL();
-        base64 = base64.split(",")[1]
-        return $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-                payload: base64
+        base64 = base64.split(",")[1];
+
+        return $.post(
+            url,
+            {
+                payload: base64,
+                opts: options
             }
-        });
+        );
     }
 
     function handleResult() {
@@ -113,6 +115,16 @@ $(document).ready(function() {
                 draw();
             }
         }
+    }
+
+    /**
+     * Returns the set options.
+     * @return {Object} Options the user set
+     */
+    function getOptions() {
+        return {
+            ocr: $('input[name=checkbox-ocr]').is(':checked')
+        };
     }
 
     /**
