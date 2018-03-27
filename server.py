@@ -80,7 +80,7 @@ def detect_lines():
     #     if l1 not in angle_lines: angle_lines.append(l1)
     #     if l2 not in angle_lines: angle_lines.append(l2)
 
-    img = draw_util.draw_labeled_lines(shape_detector.image, lines, color=(255, 0, 0), toggle_label_drawing=False)
+    img = draw_util.draw_labeled_lines(shape_detector.image, lines, color=(255, 0, 0), draw_labels=False)
     #img = draw_util.draw_labeled_lines(shape_detector.image, lines, color=(0, 255, 0), toggle_label_drawing=False)
 
     save_result_image(img)
@@ -103,7 +103,7 @@ def detect_shapes():
     for s in shapes:
         s.print_info()
 
-    img = draw_util.draw_shapes_on_image(shapes, shape_detector.image)
+    img = draw_util.draw_shapes_on_image(shape_detector.image, shapes)
 
     save_result_image(img)
 
